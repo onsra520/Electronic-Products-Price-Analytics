@@ -36,12 +36,37 @@ print(Soup.prettify())
 
 ```python
 Links = Soup.find_all("a", class_="multiple-link")
+
 for link in Links:
     href = link.get("href")
-    print(f"{href}")
+    text = link.get_text(strip=True).split(',')[0]
+    print(f"{text}: {href}")
 ```
 
 - ***Soup.find_all("a", class_="multiple-link")***: Để tìm cả các thẻ **\<a>** có **class: "multiple-link"**.
 
-  -  Các loại Tags trong html: <a href=""> Click Here!!!
-- 
+  -  Các loại Tags trong html: <a href="https://github.com/onsra520/Electronic-Products-Price-Analytics/blob/main/Document/Tags%20in%20HTML.md"> Click Here!!!</a>
+  
+- ***link.get('href')***: Lấy giá trị của thuộc tính href -  *Là URL của liên kết*.
+
+- ***link.get_text(strip=True).split(',')[0]***: Lấy nội dung văn bản trong thẻ **\<a>**, loại bỏ khoảng trắng và dấu phẩy bị thừa.   
+
+---
+```python
+import os
+import requests
+from bs4 import BeautifulSoup
+
+def Scrape_Product_Type():
+    URL = "https://cellphones.com.vn/" 
+    Homepage = requests.get(URL).text
+    Soup = BeautifulSoup(Homepage, "lxml")
+
+    Links = Soup.find_all("a", class_="multiple-link")
+
+    Pages = {}
+    for link in Links:
+        Page_Name = link.get_text(strip=True).split(',')[0]    
+        Page_URL = link.get("href")
+        Pages[Page_Name] = Page_URL  
+```
