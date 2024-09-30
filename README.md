@@ -116,9 +116,9 @@ try:
 ```
   - Mở trang web tại URL đã cho.
 
-### Hàm **close_popus**
+### Hàm **close_popups**
 ```python
-def close_popus():
+def close_popups():
     while True:
       try:
         close_button = WebDriverWait(driver, 2).until(
@@ -139,10 +139,52 @@ def close_popus():
         break 
 ```
 
+- **Mục đích**: Đóng các cửa sổ pop-up hoặc các thông báo khuyến mãi (promo) có thể xuất hiện khi trang web được tải. Đây là một phần quan trọng khi thu thập dữ liệu từ các trang web, bởi vì các pop-up có thể che khuất nội dung mà bạn cần lấy hoặc làm gián đoạn quá trình tự động hóa.
+#### Giải thích chi tiết từng phần:
+- Vòng lặp đầu tiên - Đóng cửa sổ Pop-up chính:
 
+```python
+while True:
+    try:
+        close_button = WebDriverWait(driver, 2).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button.modal-close.is-large"))
+        )
+        close_button.click()
+        time.sleep(0.5)
+    except Exception:
+        break
+```
 
+- **while True**: Vòng lặp liên tục này sẽ chạy cho đến khi không còn pop-up nào để đóng.
+  
+- **WebDriverWait(driver, 2)**: Sử dụng Selenium để chờ tối đa 2 giây cho đến khi nút đóng pop-up có thể nhấn được. Đây là một chiến lược đợi để đảm bảo nút xuất hiện.
+  
+- **EC.element_to_be_clickable**: Kiểm tra xem phần tử có khả năng tương tác (clickable) hay không. Trong trường hợp này, nó kiểm tra nút có CSS selector là "button.modal-close.is-large".
 
+- **close_button.click()**: Nếu tìm thấy nút đóng, Selenium sẽ nhấn vào nút để đóng cửa sổ pop-up.
 
+- **time.sleep(0.5)**: Tạm dừng chương trình 0.5 giây sau khi nhấn nút, nhằm đảm bảo quá trình đóng diễn ra mượt mà trước khi tiếp tục vòng lặp.
+
+- **except Exception**: Nếu không thể tìm thấy nút hoặc có bất kỳ lỗi nào khác, chương trình sẽ bắt ngoại lệ và thoát khỏi vòng lặp (break). Điều này xảy ra khi không còn pop-up nào để đóng.
+
+#### Vòng lặp thứ hai - Đóng cửa sổ khuyến mãi (promo):
+```python
+while True:
+    try:
+        close_promo_button = WebDriverWait(driver, 2).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button.cancel-button-top"))
+        )
+        close_promo_button.click()
+        time.sleep(0.5)
+    except Exception:
+        break
+
+```
+- **Mục đích**: Tương tự như vòng lặp trước, nhưng vòng lặp này nhắm vào các cửa sổ khuyến mãi (promo) với nút đóng có CSS selector là "button.cancel-button-top".
+- Các bước xử lý cũng tương tự như vòng lặp đầu tiên:
+  - Sử dụng WebDriverWait để chờ nút promo xuất hiện.
+  - Nhấn nút để đóng cửa sổ promo.
+  - Nếu không tìm thấy hoặc gặp lỗi, thoát khỏi vòng lặp.
 
 
 
