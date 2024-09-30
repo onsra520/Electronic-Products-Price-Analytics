@@ -12,6 +12,8 @@ from selenium.webdriver.support import expected_conditions as EC
 ```
 - ***Chức năng của các loại thư viện được dùng trong Web Scraping with Python***: <a href="https://github.com/onsra520/Electronic-Products-Price-Analytics/blob/main/Document/Library%20use%20for%20Web%20Scraping%20with%20Python.md"> Click Here!!!</a>
 
+---
+
 ```python
 os.makedirs(os.path.join("Cellphones Data","Dataset"),exist_ok = True)
 ```
@@ -19,6 +21,8 @@ os.makedirs(os.path.join("Cellphones Data","Dataset"),exist_ok = True)
 - ***os.path.join("Cellphones Data","Dataset")*** - Tạo ra đường dẫn **/Cellphones Data/Dataset** 
 
 - ***os.makedirs(os.path.join("Cellphones Data","Dataset"),exist_ok = True)***: Đầu tiên tạo Folder có tên là **Cellphones Data** nếu đã tồn tại thì bỏ qua nếu **exist_ok = True**, sau đó tạo thư mục con có tên là **"Dataset"** nếu có thì bỏ qua.
+
+---
 
 ```python
 def Scrape_Product(URLs, Name):
