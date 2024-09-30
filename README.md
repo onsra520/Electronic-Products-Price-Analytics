@@ -89,3 +89,56 @@ def Scrape_Product(URLs, Name):
     df.to_csv(f"{Name}.csv", header=True, index=False)
 ```
 
+---
+
+### Định nghĩa hàm
+```python
+def Scrape_Product(URLs, Name):
+```
+  - **URLs**: Đường dẫn của trang web cần thu thập dữ liệu.
+  - **Name**: Tên cho tệp CSV sẽ được lưu, chứa thông tin sản phẩm.
+
+### Khởi tạo WebDriver
+```python
+driver = webdriver.Edge()
+```
+  - Khởi tạo trình duyệt Microsoft Edge để thực hiện việc tự động hóa web.
+
+### Thực thi mã trong khối try
+```python
+try:
+  URL = URLs
+  driver.get(URL)
+```
+  - Mở trang web tại URL đã cho.
+
+### Hàm **close_popus**
+```python
+def close_popus():
+    while True:
+      try:
+        close_button = WebDriverWait(driver, 2).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button.modal-close.is-large"))
+        )
+        close_button.click()
+        time.sleep(0.5)
+      except Exception:
+        break 
+
+    while True:
+      try:
+          close_promo_button = WebDriverWait(driver, 2).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, "button.cancel-button-top"))
+        )
+        close_promo_button.click()
+      except Exception:
+        break 
+```
+
+
+
+
+
+
+
+
