@@ -240,22 +240,22 @@ Soup = BeautifulSoup(Page, "xlmx")
 Product_Names = Soup.find_all("div", class_="product__name")
 Product_Prices = Soup.find_all("p", class_="product__price--show")
 ```
-#### **driver.page_source**: là thuộc tính của đối tượng driver (được khởi tạo từ Selenium WebDriver). Nó trả về toàn bộ mã nguồn HTML của trang web hiện tại mà trình duyệt đang hiển thị.
+- **driver.page_source**: là thuộc tính của đối tượng driver (được khởi tạo từ Selenium WebDriver). Nó trả về toàn bộ mã nguồn HTML của trang web hiện tại mà trình duyệt đang hiển thị.
   > Ở đây nó sẽ trả về **Source Code** của trang ***Cellphones***
 
-#### **BeautifulSoup(Page, "lxml")**: Đây là cách sử dụng thư viện *BeautifulSoup* từ gói *bs4* để phân tích (parse) mã HTML lấy từ **Page**
+- **BeautifulSoup(Page, "lxml")**: Đây là cách sử dụng thư viện *BeautifulSoup* từ gói *bs4* để phân tích (parse) mã HTML lấy từ **Page**
   >**HTML parsing** là quá trình đọc mã HTML từ trang web và trích xuất các thành phần cụ thể từ đó, như thẻ, thuộc tính, và nội dung của trang.
 
-#### **"lxml"**: Đây là trình phân tích cú pháp (parser) mà BeautifulSoup sử dụng để đọc và hiểu mã HTML. 
+- **"lxml"**: Đây là trình phân tích cú pháp (parser) mà BeautifulSoup sử dụng để đọc và hiểu mã HTML. 
   ```python
   !pip install lxml # Cài đặt HTML parsing
   ```
-#### **Soup.find_all("div", class_="product__name")**
-- **Soup.find_all()**: Đây là một phương thức của BeautifulSoup giúp tìm tất cả các thẻ HTML khớp với tiêu chí tìm kiếm.
+- **Soup.find_all("div", class_="product__name")**
+  - **Soup.find_all()**: Đây là một phương thức của BeautifulSoup giúp tìm tất cả các thẻ HTML khớp với tiêu chí tìm kiếm.
 
-- **"div"**: Tên của thẻ HTML cần tìm, trong trường hợp này là thẻ *\<div>*.
+  - **"div"**: Tên của thẻ HTML cần tìm, trong trường hợp này là thẻ *\<div>*.
 
-- **class_="product__name"**: Đây là điều kiện để tìm thẻ *\<div>* có lớp CSS (class) là **"product__name"**.
+  - **class_="product__name"**: Đây là điều kiện để tìm thẻ *\<div>* có lớp CSS (class) là **"product__name"**.
 
 
 
