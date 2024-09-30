@@ -186,5 +186,79 @@ while True:
   - Nhấn nút để đóng cửa sổ promo.
   - Nếu không tìm thấy hoặc gặp lỗi, thoát khỏi vòng lặp.
 
+### Vòng lập chính
+```python
+while True:
+    try:
+        close_popups()
+        show_more_button = WebDriverWait(driver, 2).until(
+            EC.element_to_be_clickable(
+                (By.CSS_SELECTOR, "a.button.btn-show-more.button__show-more-product")
+            )
+        )
+        show_more_button.click()
+        time.sleep(2)
+    except Exception as e:
+        break
+```
+#### 1. Vòng lặp vô hạn **while True**
+
+- Chạy cho đến khi bị dừng lại bởi một *điều kiện* (ở đây là thông qua câu lệnh break trong khối except). Vòng lặp này đảm bảo rằng mã sẽ liên tục *kiểm tra* và *nhấn* vào nút **"Hiển thị thêm"** cho đến khi nút đó không còn xuất hiện trên trang. 
+  
+#### 2. Đóng popup với hàm ***close_popups()***
+   
+- Mỗi khi vòng lặp bắt đầu, hàm **close_popups()** được gọi để kiểm tra và đóng bất kỳ popup quảng cáo hay thông báo nào có thể xuất hiện trong quá trình tải trang. Điều này cần thiết để tránh việc popup cản trở thao tác với các phần tử trên trang.
+  
+- Hàm **close_popups()** bao gồm hai vòng lặp lồng nhau, mỗi vòng kiểm tra một loại popup cụ thể (advertisement và promo). Các popup này sẽ được nhấn *"đóng"* nếu chúng xuất hiện.
+
+#### 3. Xử lý nút **"Hiển thị thêm"**
+```python
+show_more_button = WebDriverWait(driver, 2).until(
+    EC.element_to_be_clickable(
+        (By.CSS_SELECTOR, "a.button.btn-show-more.button__show-more-product")
+    )
+)
+show_more_button.click()
+time.sleep(2)
+```
+- **Mục đích**: Tương tự như Hàm **close_popups()**, điều kiện mà Selenium sẽ đợi là nút có thể nhấn được. Nhắm vào nút có **CSS selector** là **"a.button.btn-show-more.button__show-more-product"**, đại diện cho nút *"Hiển thị thêm"* trên trang.
+
+- **time.sleep(2)**: Tạm dừng chờ trang tải thêm dữ liệu.
+
+#### 4. Khối **except**
+```python
+except Exception as e:
+    break
+```
+- Nếu có bất kì lỗi nào trong quá trình *nhấn nút* ***"Hiển thị thêm"*** (ví dụ: nút không còn tồn tại trên trang, trang đã tải hết sản phẩm, hoặc xảy ra lỗi mạng), thì vòng lặp sẽ dừng lại bởi câu lệnh **break**. Đồng nghĩa với việc tất cả sản phẩm đã được tải.
+
+### Phân tích HTML với BeautifulSoup và Tìm kiếm thông tin sản phẩm
+```python 
+Page = driver.page_source
+Soup = BeautifulSoup(Page, "xlmx")
+
+Product_Names = Soup.find_all("div", class_="product__name")
+Product_Prices = Soup.find_all("p", class_="product__price--show")
+```
+#### **driver.page_source**: là thuộc tính của đối tượng driver (được khởi tạo từ Selenium WebDriver). Nó trả về toàn bộ mã nguồn HTML của trang web hiện tại mà trình duyệt đang hiển thị.
+  > Ở đây nó sẽ trả về **Source Code** của trang ***Cellphones***
+
+#### **BeautifulSoup(Page, "lxml")**: Đây là cách sử dụng thư viện *BeautifulSoup* từ gói *bs4* để phân tích (parse) mã HTML lấy từ **Page**
+  >**HTML parsing** là quá trình đọc mã HTML từ trang web và trích xuất các thành phần cụ thể từ đó, như thẻ, thuộc tính, và nội dung của trang.
+
+#### **"lxml"**: Đây là trình phân tích cú pháp (parser) mà BeautifulSoup sử dụng để đọc và hiểu mã HTML. 
+  ```python
+  !pip install lxml # Cài đặt HTML parsing
+  ```
+#### **Soup.find_all("div", class_="product__name")**
+- **Soup.find_all()**: Đây là một phương thức của BeautifulSoup giúp tìm tất cả các thẻ HTML khớp với tiêu chí tìm kiếm.
+
+- **"div"**: Tên của thẻ HTML cần tìm (trong trường hợp này là thẻ <div>).
+
+- **class_="product__name"**: Đây là điều kiện để tìm thẻ *\<div>* có lớp CSS (class) là **"product__name"**.
+
+
+
+
 
 
