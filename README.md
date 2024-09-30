@@ -251,13 +251,15 @@ Product_Prices = Soup.find_all("p", class_="product__price--show")
   !pip install lxml # Cài đặt HTML parsing
   ```
 - **Soup.find_all("div", class_="product__name")**
+  
   - **Soup.find_all()**: Đây là một phương thức của BeautifulSoup giúp tìm tất cả các thẻ HTML khớp với tiêu chí tìm kiếm.
 
   - **"div"**: Tên của thẻ HTML cần tìm, trong trường hợp này là thẻ *\<div>*.
 
-  - **class_="product__name"**: Đây là điều kiện để tìm thẻ *\<div>* có lớp CSS (class) là **"product__name"**.
+  - **class_="product__name"**: Đây là điều kiện để tìm thẻ *\<div>* có lớp CSS (class) là **product__name**.
 
-
+- **Soup.find_all("p", class_="product__price--show")**
+Tương tự như câu lệnh trên, nhưng ở đây bạn đang tìm các thẻ *\<p>* có class là **product__price--show**.
 
 
 
