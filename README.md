@@ -159,7 +159,7 @@ while True:
   
 - **WebDriverWait(driver, 2)**: Sử dụng Selenium để chờ tối đa 2 giây cho đến khi nút đóng pop-up có thể nhấn được. Đây là một chiến lược đợi để đảm bảo nút xuất hiện.
   
-- **EC.element_to_be_clickable**: Kiểm tra xem phần tử có khả năng tương tác (clickable) hay không. Trong trường hợp này, nó kiểm tra nút có CSS selector là "button.modal-close.is-large".
+- **EC.element_to_be_clickable**: Kiểm tra xem phần tử có khả năng tương tác (clickable) hay không. Trong trường hợp này, nó kiểm tra nút có **CSS selector** là **"button.modal-close.is-large"**.
 
 - **close_button.click()**: Nếu tìm thấy nút đóng, Selenium sẽ nhấn vào nút để đóng cửa sổ pop-up.
 
@@ -180,9 +180,9 @@ while True:
         break
 
 ```
-- **Mục đích**: Tương tự như vòng lặp trước, nhưng vòng lặp này nhắm vào các cửa sổ khuyến mãi (promo) với nút đóng có CSS selector là "button.cancel-button-top".
+- **Mục đích**: Tương tự như vòng lặp trước, nhưng vòng lặp này nhắm vào các cửa sổ khuyến mãi (promo) với nút đóng có **CSS selector** là **"button.cancel-button-top"**.
 - Các bước xử lý cũng tương tự như vòng lặp đầu tiên:
-  - Sử dụng WebDriverWait để chờ nút promo xuất hiện.
+  - Sử dụng *WebDriverWait* để chờ nút promo xuất hiện.
   - Nhấn nút để đóng cửa sổ promo.
   - Nếu không tìm thấy hoặc gặp lỗi, thoát khỏi vòng lặp.
 
