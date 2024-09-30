@@ -259,8 +259,42 @@ Product_Prices = Soup.find_all("p", class_="product__price--show")
   - **class_="product__name"**: Đây là điều kiện để tìm thẻ *\<div>* có lớp CSS (class) là **product__name**.
 
 - **Soup.find_all("p", class_="product__price--show")**
-Tương tự như câu lệnh trên, nhưng ở đây bạn đang tìm các thẻ *\<p>* có class là **product__price--show**.
+  - Tương tự như câu lệnh trên, nhưng ở đây bạn đang tìm các thẻ *\<p>* có class là **product__price--show**.
 
+### Kiểm tra và lưu thông tin
+```python 
+Product_Information = {}
 
+if len(Product_Names) == len(Product_Prices):
+    for name, price in zip(Product_Names, Product_Prices):
+        product_name = name.get_text(strip=True)
+        product_price = (
+            price.get_text(strip=True).replace("₫", "").replace(".", "").strip()
+        )
+        Product_Information[product_name] = product_price
+else:
+    print("Số lượng tên sản phẩm và giá sản phẩm không khớp!")
 
+for product, price in Product_Information.items():
+    print(f"Tên sản phẩm: {product} - Giá: {price}")
 
+```
+- Tạo một từ điển **Product_Information** để lưu tên sản phẩm và giá tương ứng.
+
+- Nếu số lượng tên sản phẩm và giá không khớp, sẽ in ra thông báo lỗi.
+
+- In ra danh sách tên sản phẩm và giá của chúng.
+
+### Đóng trình duyệt
+```python
+finally:
+    driver.quit()
+```
+- Đảm bảo trình duyệt sẽ được đóng lại sau khi hoàn thành việc thu thập dữ liệu, bất kể có lỗi xảy ra hay không.
+
+### Xuất ra tệp CSV
+```python
+df = pd.DataFrame(list(Product_Information.items()), columns=["Tên sản phẩm", "Giá"])
+df.to_csv(f"{Name}.csv", header=True, index=False)
+```
+- Tạo một DataFrame từ từ điển Product_Information và xuất ra tệp CSV với tên được cung cấp trong tham số Name.
