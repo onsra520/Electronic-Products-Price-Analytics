@@ -13,61 +13,79 @@ from selenium.webdriver.support import expected_conditions as EC
 - ***Chức năng của các loại thư viện được dùng trong Web Scraping with Python***: <a href="https://github.com/onsra520/Electronic-Products-Price-Analytics/blob/main/Document/Library%20use%20for%20Web%20Scraping%20with%20Python.md"> Click Here!!!</a>
 
 ```python
-URL = "https://cellphones.com.vn/"
-Page = requests.get(URL).text 
-Soup = BeautifulSoup(Page, "lxml")
+os.makedirs(os.path.join("Cellphones Data","Dataset"),exist_ok = True)
 ```
 
-- ***URL*** - Đây là địa chỉ URL của trang web mà bạn muốn truy cập, trong trường hợp này là trang chủ của Cellphones. 
+- ***os.path.join("Cellphones Data","Dataset")*** - Tạo ra đường dẫn **/Cellphones Data/Dataset** 
 
-- ***requests.get(URL)***: Sẽ gửi một yêu cầu HTTP GET tới trang web Cellphones để lấy nội dung của trang. Nếu thành công, nó sẽ nhận về mã nguồn HTML của trang.
-
-- ***.text***: Lấy phần nội dung HTML của trang web dưới dạng chuỗi văn bản (string). Đây là mã nguồn HTML của toàn bộ trang mà bạn có thể xử lý sau đó.
-
-- ***BeautifulSoup(Page, "lxml")***: Sử dụng BeautifulSoup để phân tích cú pháp HTML của trang chỉ định, ở đây **Page** được chỉ định là *Cellphones*   
-  
-- ***"lxml"***: là parser (trình phân tích) dùng để xử lý mã HTML.
+- ***os.makedirs(os.path.join("Cellphones Data","Dataset"),exist_ok = True)***: Đầu tiên tạo Folder có tên là **Cellphones Data** nếu đã tồn tại thì bỏ qua nếu **exist_ok = True**, sau đó tạo thư mục con có tên là **"Dataset"** nếu có thì bỏ qua.
 
 ```python
-print(Soup.prettify()) 
+def Scrape_Product(URLs, Name):
+    driver = webdriver.Edge()
+
+    try:
+        URL = URLs
+        driver.get(URL)
+        
+        def close_popups():
+            while True:
+                try:
+                    close_button = WebDriverWait(driver, 2).until(
+                        EC.element_to_be_clickable((By.CSS_SELECTOR, "button.modal-close.is-large"))
+                    )
+                    close_button.click()
+                    time.sleep(0.5)
+                except Exception:
+                    break
+
+            while True:
+                try:
+                    close_promo_button = WebDriverWait(driver, 2).until(
+                        EC.element_to_be_clickable((By.CSS_SELECTOR, "button.cancel-button-top"))
+                    )
+                    close_promo_button.click()
+                    time.sleep(0.5)
+                except Exception:
+                    break
+        
+        while True:
+            try:
+                close_popups()            
+                show_more_button = WebDriverWait(driver, 2).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "a.button.btn-show-more.button__show-more-product"))
+                )
+                show_more_button.click()
+                time.sleep(2)
+            except Exception as e:
+                break
+
+        Page = driver.page_source
+        Soup = BeautifulSoup(Page, "lxml")
+        
+        # Tìm tất cả tên và giá sản phẩm
+        Product_Names = Soup.find_all("div", class_="product__name")
+        Product_Prices = Soup.find_all("p", class_="product__price--show")
+
+        Product_Information = {}
+
+        # Kiểm tra xem số lượng tên sản phẩm và giá có khớp không
+        if len(Product_Names) == len(Product_Prices):
+            for name, price in zip(Product_Names, Product_Prices):
+                product_name = name.get_text(strip=True)
+                product_price = price.get_text(strip=True).replace("₫", "").replace(".", "").strip()
+                Product_Information[product_name] = product_price
+        else:
+            print("Số lượng tên sản phẩm và giá sản phẩm không khớp!")
+
+        for product, price in Product_Information.items():
+            print(f"Tên sản phẩm: {product} - Giá: {price}")
+
+    finally:
+        # Đóng trình duyệt
+        driver.quit()
+    
+    df = pd.DataFrame(list(Product_Information.items()), columns=["Tên sản phẩm", "Giá"])
+    df.to_csv(f"{Name}.csv", header=True, index=False)
 ```
 
-- ***Soup.prettify()***: Phương thức này định dạng và làm đẹp mã nguồn HTML. Nó sẽ in ra một phiên bản của HTML đã được phân tích với các thụt lề và dòng mới để dễ đọc hơn.
-
-
-```python
-Links = Soup.find_all("a", class_="multiple-link")
-
-for link in Links:
-    href = link.get("href")
-    text = link.get_text(strip=True).split(',')[0]
-    print(f"{text}: {href}")
-```
-
-- ***Soup.find_all("a", class_="multiple-link")***: Để tìm cả các thẻ **\<a>** có **class: "multiple-link"**.
-
-  -  Các loại Tags trong html: <a href="https://github.com/onsra520/Electronic-Products-Price-Analytics/blob/main/Document/Tags%20in%20HTML.md"> Click Here!!!</a>
-  
-- ***link.get('href')***: Lấy giá trị của thuộc tính href -  *Là URL của liên kết*.
-
-- ***link.get_text(strip=True).split(',')[0]***: Lấy nội dung văn bản trong thẻ **\<a>**, loại bỏ khoảng trắng và dấu phẩy bị thừa.   
-
----
-```python
-import os
-import requests
-from bs4 import BeautifulSoup
-
-def Scrape_Product_Type():
-    URL = "https://cellphones.com.vn/" 
-    Homepage = requests.get(URL).text
-    Soup = BeautifulSoup(Homepage, "lxml")
-
-    Links = Soup.find_all("a", class_="multiple-link")
-
-    Pages = {}
-    for link in Links:
-        Page_Name = link.get_text(strip=True).split(',')[0]    
-        Page_URL = link.get("href")
-        Pages[Page_Name] = Page_URL  
-```
