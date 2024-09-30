@@ -10,11 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 ```
-- ***os***: Thư viện này dùng để tương tác với hệ điều hành. Trong đoạn code này chưa sử dụng thư viện này.
-
-- ***requests***: Thư viện dùng để gửi yêu cầu HTTP và nhận phản hồi từ một trang web. Nó thường được sử dụng để lấy mã nguồn HTML của trang.
-
-- ***BeautifulSoup***: Được sử dụng để phân tích cú pháp HTML và XML, giúp dễ dàng trích xuất thông tin từ trang web.
+- ***Chức năng của các loại thư viện được dùng trong Web Scraping with Python***: <a href="https://github.com/onsra520/Electronic-Products-Price-Analytics/blob/main/Document/Library%20use%20for%20Web%20Scraping%20with%20Python.md"> Click Here!!!</a>
 
 ```python
 URL = "https://cellphones.com.vn/"
