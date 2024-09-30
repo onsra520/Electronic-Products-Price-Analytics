@@ -1,9 +1,14 @@
 # Web Scraping with Python
 
 ```python
-import os
-import requests
+import os, shutil, glob
+import time, requests
+import pandas as pd
 from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 ```
 - ***os***: Thư viện này dùng để tương tác với hệ điều hành. Trong đoạn code này chưa sử dụng thư viện này.
 
