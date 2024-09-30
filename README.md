@@ -298,3 +298,44 @@ df = pd.DataFrame(list(Product_Information.items()), columns=["Tên sản phẩm
 df.to_csv(f"{Name}.csv", header=True, index=False)
 ```
 - Tạo một DataFrame từ từ điển Product_Information và xuất ra tệp CSV với tên được cung cấp trong tham số Name.
+
+---
+
+```python
+def Scrape_Product_URL():
+    URL = "https://cellphones.com.vn/"
+    Homepage = requests.get(URL).text
+    Soup = BeautifulSoup(Homepage, "lxml")
+
+    Links = Soup.find_all("a", class_="multiple-link")
+
+    Pages = {}
+    for link in Links:
+        Page_Name = link.get_text(strip=True).replace(",", "")
+        Page_URL = link.get("href")
+        Pages[Page_Name] = Page_URL
+
+    return Pages
+
+def Scrape_Per_URL():
+    Links = Scrape_Product_URL()
+    for Num in Links:
+        Scrape_Product(Links[Num], Num)
+        shutil.move(f"{Num}.csv", os.path.join("Cellphones Data","Dataset"))
+Scrape_Per_URL() 
+```
+
+### Hàm **Scrape_Product_URL()**
+- Lấy URL của từng loại sản phẩm của trang chủ <a href=https://cellphones.com.vn/>Cellphones</a>
+  >Điện thoại : https://cellphones.com.vn/mobile.html <p>
+  >tablet : https://cellphones.com.vn/tablet.html ...etc...<p>
+
+- Bằng cách tìm toàn bộ ***find_all*** các tags **\<a>** với *class* là **multiple-link** <p>
+
+### Hàm **Scrape_Per_URL()**
+- Với mỗi URl được gán trong cho mỗi đối tượng trong *Dict*
+  >**Điện thoại** -> https://cellphones.com.vn/mobile.html <p>
+  
+- Sẽ được đưa vào hàm **Scrape_Product(URLs, Name)**
+  
+- Sau khi đã có được dữ liệu sẽ di chuyển file csv vào trong Folder có đường dẫn **\Cellphones Data\Dataset**
